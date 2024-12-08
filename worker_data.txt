@@ -1,0 +1,5 @@
+GasparLaci Gaspar_Laci Worker 40 10
+worker1 John_Doe Worker 35 8
+worker2 Jane_Smith Worker 20 5
+admin1 Admin_One Administrator 45 12
+admin2 Admin_Two Administrator 43 20

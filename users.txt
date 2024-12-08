@@ -1,0 +1,12 @@
+admin admin 4
+GasparLaci 1234 1
+AverageBuyer gimmemonney 2
+JoeMama itsjoever 3
+worker1 password123 1
+buyer1 securepass 2
+supplier1 supplyme 3
+admin1 adminpass 4
+worker2 passworker 1
+buyer2 buyerkey 2
+supplier2 supplierkey 3
+admin2 superadmin 4
