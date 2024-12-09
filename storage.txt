@@ -1,0 +1,4 @@
+ID: 00175
+name: elektromos porszivo
+quantity: 50
+location: 4-es sor 3. polc
