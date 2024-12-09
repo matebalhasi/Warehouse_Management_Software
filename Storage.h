@@ -4,8 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 #include <limits>
-
 
 // Adatokat tároló struktúra
 struct Data {
@@ -16,11 +16,12 @@ struct Data {
 };
 
 // Adatok beolvasása a fájlból
-void loadData(const std::string& filename, Data& data) {
+void loadData(const std::string& filename, std::vector<Data>& dataVec) {
     std::ifstream infile(filename);
     std::string line;
 
     if (infile.is_open()) {
+        Data data;
         while (std::getline(infile, line)) {
             size_t delimiter_pos = line.find(": ");
             if (delimiter_pos != std::string::npos) {
@@ -40,6 +41,13 @@ void loadData(const std::string& filename, Data& data) {
                     data.location = value;
                 }
             }
+            if (line.empty()) {  // Új rekord kezdete
+                dataVec.push_back(data);
+                data = Data();  // Nullázzuk az aktuális adatot
+            }
+        }
+        if (!data.id.empty()) {  // Utolsó rekord hozzáadása, ha nincs üres sor a végén
+            dataVec.push_back(data);
         }
         infile.close();
     }
@@ -49,13 +57,16 @@ void loadData(const std::string& filename, Data& data) {
 }
 
 // Adatok mentése a fájlba
-void saveData(const std::string& filename, const Data& data) {
+void saveData(const std::string& filename, const std::vector<Data>& dataVec) {
     std::ofstream outfile(filename);
     if (outfile.is_open()) {
-        outfile << "ID: " << data.id << std::endl;
-        outfile << "name: " << data.name << std::endl;
-        outfile << "quantity: " << data.quantity << std::endl;
-        outfile << "location: " << data.location << std::endl;
+        for (const auto& data : dataVec) {
+            outfile << "ID: " << data.id << std::endl;
+            outfile << "name: " << data.name << std::endl;
+            outfile << "quantity: " << data.quantity << std::endl;
+            outfile << "location: " << data.location << std::endl;
+            outfile << std::endl;  // Üres sor az új rekordhoz
+        }
         outfile.close();
     }
     else {
@@ -64,21 +75,41 @@ void saveData(const std::string& filename, const Data& data) {
 }
 
 // Adatok megjelenítése a konzolon
-void displayData(const Data& data) {
-    std::cout << "ID: " << data.id << std::endl;
-    std::cout << "Name: " << data.name << std::endl;
-    std::cout << "Quantity: " << data.quantity << std::endl;
-    std::cout << "Location: " << data.location << std::endl;
+void displayData(const std::vector<Data>& dataVec) {
+    for (const auto& data : dataVec) {
+        std::cout << "ID: " << data.id << std::endl;
+        std::cout << "Name: " << data.name << std::endl;
+        std::cout << "Quantity: " << data.quantity << std::endl;
+        std::cout << "Location: " << data.location << std::endl;
+        std::cout << std::endl;
+    }
 }
 
 // Adatok módosítása
-void manageData(Data& data) {
+void manageData(std::vector<Data>& dataVec) {
     bool running = true;
     while (running) {
         std::cout << "\nCurrent data:\n";
-        displayData(data);
+        displayData(dataVec);
 
-        std::cout << "\nMenu:\n";
+        std::cout << "Select a record to modify (1-" << dataVec.size() << "), or 0 to exit: ";
+        int record;
+        std::cin >> record;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if (record == 0) {
+            running = false;
+            continue;
+        }
+
+        if (record < 1 || record > dataVec.size()) {
+            std::cout << "Invalid record number, please try again.\n";
+            continue;
+        }
+
+        Data& data = dataVec[record - 1];
+
+        std::cout << "\nModify record " << record << ":\n";
         std::cout << "1. Change ID\n";
         std::cout << "2. Change Name\n";
         std::cout << "3. Change Quantity\n";
@@ -110,7 +141,7 @@ void manageData(Data& data) {
             std::getline(std::cin, data.location);
             break;
         case 5:
-            saveData("adatok.txt", data);
+            saveData("adatok.txt", dataVec);
             running = false;
             break;
         case 6:
@@ -124,8 +155,3 @@ void manageData(Data& data) {
 }
 
 #endif // DATA_MANAGER_H
-
-
-
-
-
