@@ -1,4 +1,9 @@
 ID: 00175
-name: elektromos porszivo
+name: porszivo
 quantity: 50
 location: 4-es sor 3. polc
+
+ID: 00172
+name: Mixer
+quantity: 20
+location:24-es sor 6. polc

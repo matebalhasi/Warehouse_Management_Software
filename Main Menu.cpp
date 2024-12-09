@@ -4,6 +4,11 @@
 #include <fstream>
 #include <sstream>
 #include "PersonalData.h"
+#include "Complaint.h"
+#include "Items.h"
+#include "Storage.h"
+
+
 
 using namespace std;
 
@@ -97,6 +102,10 @@ bool loginValidation(const string& id, const string& password, char clearance_le
 
 int main() {
     PersonalData personalData("worker_data.txt");
+    Items item;
+
+    vector<Data> dataVec;
+	loadData("storage.txt", dataVec);
     char input;
     string id, password;
 
@@ -133,9 +142,32 @@ int main() {
                         showWorkerMenu();
                         cin >> input;
                     }
+                    if(input == '2')
+                    {
+                        system("cls");
+                        displayData(dataVec);
+                        pressToContinue();
+                        system("cls");
+                        showWorkerMenu();
+                        cin >> input;
+                       
+                    }
+
+                    if(input == '3')
+                    {
+                        system("cls");
+                        Items item;
+                        cout << "Listing out all items currently in the system..." << endl;
+                        item.listItems();
+                        pressToContinue();
+                        system("cls");
+                        showWorkerMenu();
+                        cin >> input;
+                    }
                     else if (input == '4') { 
                         system("cls");
                         showMainMenu();
+                        cin >> input;
                         break;
                     }
                 }
@@ -158,9 +190,44 @@ int main() {
                 cin >> input;
 
                 while (true) {
+                    if (input == '1')
+                    {
+                        system("cls");
+                        displayData(dataVec);
+                        pressToContinue();
+                        system("cls");
+                        showWorkerMenu();
+                        cin >> input;
+
+                    }
+                    if(input == '2')
+                    {
+                        system("cls");
+                        item.addPurchase(dataVec);
+                        pressToContinue();
+                        system("cls");
+                        showBuyerMenu();
+                        cin >> input;
+
+                    }
+                     if (input == '3')
+                    {
+                        system("cls");
+                        Complaint complaint;
+                        list<Complaint>clista;
+                        complaint.beolvas();
+                        complaint.add();
+                        pressToContinue();
+                        /*system("cls");
+                        showSupplierMenu();
+                        cin >> input;*/
+
+                    }
+
                     if (input == '4') {
                         system("cls");
                         showMainMenu();
+                        cin >> input;
                         break;
                     }
                 }
@@ -183,9 +250,43 @@ int main() {
                 cin >> input;
 
                 while (true) {
-                    if (input == '4') {
+                    if (input == '1')
+                    {
                         system("cls");
+                        displayData(dataVec);
+                        pressToContinue();
+                        system("cls");
+                        showWorkerMenu();
+                        cin >> input;
+
+                    }
+                    if (input == '2')
+                    {
+                        system("cls");
+                        item.addResuply(id);
+                        pressToContinue();
+                        system("cls");
+                        showBuyerMenu();
+                        cin >> input;
+
+                    }
+                    if (input == '3')
+                    {
+                        system("cls");
+                        Complaint complaint;
+                        list<Complaint>clista;
+                        complaint.beolvas();
+                        complaint.add();
+                        pressToContinue();
+                        /*system("cls");
+                        showSupplierMenu();
+                        cin >> input;*/
+
+                    }
+                    if (input == '4') {
+                         system("cls");
                         showMainMenu();
+                        cin >> input;
                         break;
                     }
                 }
@@ -226,16 +327,108 @@ int main() {
                         cin >> input;
                    }
 
-                  
+                    if(input =='2')
+                    {
+                        system("cls");
+                        cout << "Fetching Worker Data";
+                        for (int i = 0; i < 3; ++i) {
+                            this_thread::sleep_for(chrono::milliseconds(500));
+                            cout << ".";
+                        }
+                        system("cls");
+                        personalData.listWorkers(id);
+                        pressToContinue();
+
+                        cout << "Would you like to edit a worker's information? (y/n)";
+                        char option;
+                        cin >> option;
+                        if(option == 'y'|| option == 'Y')
+                        {
+                            cout << "Edit the user ID of the worker you wish to modify: ";
+                            string EditableUser, EditedName, EditedPosition, EditedHoursWorked,EditedPTO;
+
+                            cin >> EditableUser;
+
+                            cout << "Enter the new name: ";
+                            cin >> EditedName;
+
+                            cout << "Enter new position: ";
+                           
+                            cin >> EditedPosition;
+                            cout << "Enter new hours worked: ";
+                           
+                            cin >> EditedHoursWorked;
+                            cout << "Enter new PTO remaining: ";
+                           
+                            cin >> EditedPTO;
+                            personalData.editWorkerInfo(EditableUser, EditedName, EditedPosition, EditedHoursWorked, EditedPTO);
+                            pressToContinue();
+                        }
+
+
+
+
+                    	system("cls");
+                        showAdminMenu();
+                        cin >> input;
+                    }
+                    if(input == '3')
+                    {
+                    	system("cls");
+                    	displayData(dataVec);
+                    	pressToContinue();
+                    	cout << "\n\nWould you like to edit the managed data? (y/n)";
+                    	cin >> input;
+                        if(input == 'y'||input == 'Y')
+                        {
+
+                        	manageData(dataVec);
+                            saveData("storage.txt", dataVec);
+                            
+                        }
+
+
+                        system("cls");
+                        showAdminMenu();
+                        cin >> input;
                         
-                
+                    }
+
+                     if (input == '4')
+                  {
+                         system("cls");
+                         Complaint complaint;
+                         list<Complaint>clista;
+                         complaint.beolvas();
+						 complaint.kiir();
+                        pressToContinue();
+                         system("cls");
+                         showAdminMenu();
+                         cin >> input;
+                         
+                  }
+                        
+                if(input == '5')
+                {
+                    system("cls");
+                    Items item;
+                    cout << "Listing out all items currently in the system..." << endl;
+                    item.listItems();
+                    pressToContinue();
+                    system("cls");
+                    showAdminMenu();
+                    cin >> input;
+
+
+                }
                    
                     
 
                 	if(input == '6')
                 	{
-                		system("cls");
+                        system("cls");
                         showMainMenu();
+                        cin >> input;
                         break;
                 	}
                 }
@@ -264,7 +457,7 @@ int main() {
             break;
         }
         }
-        cin >> input;
+       
     }
 }
 

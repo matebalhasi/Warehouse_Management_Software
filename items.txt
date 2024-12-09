@@ -1,0 +1,3 @@
+1 Gears_Shaft_001 purchase 40
+2 Motor_Piston_152 Purchase 40
+3 Car_Suspension_1344 Purchase 124

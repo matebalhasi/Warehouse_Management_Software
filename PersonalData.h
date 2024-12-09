@@ -29,24 +29,8 @@ public:
 	PersonalData(const string& filePath) {
 		loadWorkerData(filePath);
 	}
-	void saveWorkerData(const string& filePath) const {
-		ofstream file(filePath);
-		if (!file.is_open()) {
-			cout << "Error! File could not be opened for writing: " << filePath << endl;
-			return;
-		}
-
-		for (const auto& [userID, worker] : workers) {
-			file << worker.userID << " "
-				<< worker.name << " "
-				<< worker.position << " "
-				<< worker.hoursWorked << " "
-				<< worker.PTORemaining << "\n";
-		}
-		file.close();
-	}
 	void loadWorkerData(const string& filePath) {
-		ifstream file(filePath);
+		fstream file(filePath);
 		if (!file.is_open()) {
 			cout << "Error! File could not be opened: " << filePath << endl;
 			return;
@@ -62,8 +46,24 @@ public:
 			}
 			workers[worker.userID] = worker;
 		}
+
 		file.close();
 	}
+	void saveWorkerData(const string& filePath){
+		ofstream file(filePath);
+        if (!file.is_open()) {
+            cout << "Error! Could not open file for writing: " << filePath << endl;
+            return;
+        }
+
+        for (const auto& pair : workers) {
+            const Worker& worker = pair.second;
+            file << worker.userID << " " << worker.name << " " << worker.position << " "
+                 << worker.hoursWorked << " " << worker.PTORemaining << endl;
+        }
+		file.close();
+	}
+	
 
 	string getWorkerInfo(string userID)const
 	{
@@ -98,15 +98,16 @@ public:
 			}
 		}
 	}
-	void editWorkerInfo(const string& userID, const string& newName, const string& newPosition, const string& newHoursWorked, const string& newPTORemaining) {
+	void editWorkerInfo(const string& userID, const string& newName, const string& newPosition,
+		const string& newHoursWorked, const string& newPTORemaining) {
 		auto it = workers.find(userID);
 		if (it != workers.end()) {
 			it->second.name = newName;
 			it->second.position = newPosition;
 			it->second.hoursWorked = newHoursWorked;
 			it->second.PTORemaining = newPTORemaining;
-			
-			saveWorkerData(filePath);
+
+			saveWorkerData("worker_data.txt");
 			cout << "Worker information updated successfully." << endl;
 		}
 		else {
