@@ -415,9 +415,29 @@ int main() {
                     cout << "Listing out all items currently in the system..." << endl;
                     item.listItems();
                     pressToContinue();
-                    system("cls");
-                    showAdminMenu();
-                    cin >> input;
+                    cout << "\n\nWould you like to edit the Items? (y/n)";
+
+                	cin >> input;
+                    if (input == 'y' || input == 'Y')
+                    {
+						string index, newName, newType, newQuantity;
+                        
+
+                        item.editItems(index, newName, newType, newQuantity);
+                        pressToContinue();
+                                              
+                        system("cls");
+                        showAdminMenu();
+                        cin >> input;
+                    }
+                    else
+                    {
+                        system("cls");
+                        showAdminMenu();
+                        cin >> input;
+                    }
+
+                    
 
 
                 }

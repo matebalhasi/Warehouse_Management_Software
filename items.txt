@@ -1,3 +1,4 @@
 1 Gears_Shaft_001 purchase 40
-2 Motor_Piston_152 Purchase 40
+2 Vacuum_cleaner Purchase 20
 3 Car_Suspension_1344 Purchase 124
+4 PowerVacuum Resuply 20

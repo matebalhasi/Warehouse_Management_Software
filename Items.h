@@ -25,7 +25,14 @@ private:
 		Item() :id(0), quantity(0), name(""), type(""){}
 
 		Item(int id, const string& name, const string& type, int quantity)
-			: id(id), name(name), type(type), quantity(quantity) {}
+			: id(id), name(name), type(type), quantity(quantity) {};
+
+		bool operator==(const Item& other) const {
+			return id == other.id &&
+				name == other.name &&
+				type == other.type &&
+				quantity == other.quantity;
+		}
 		
 	};
 	vector<Item> ItemLists;
@@ -153,6 +160,78 @@ public:
 
 
 	}
+	void saveItemData() {
+		ofstream file("items.txt");
+		if (!file.is_open()) {
+			cout << "Error! Could not open file for writing: " << filePath << endl;
+			return;
+		}
+
+		for (const auto& item : ItemLists) {
+			file << item.id << " " << item.name << " " << item.type <<" " << item.quantity << "\n";
+			
+		}
+		file.close();
+	}
+
+	void editItems(const string, const string& itemName, const string& itemtype, const string& itemQuantity)
+	{
+		string targetCode;
+		bool itemFound = false;
+
+		cout << "Enter the code of the item you want to edit: ";
+		cin >> targetCode;
+		int targetID;
+		try
+		{
+			targetID = stoi(targetCode);
+		}
+		catch (const invalid_argument& e) {
+			cout << "Invalid item ID format.\n";
+			return;
+		}
+		catch (const out_of_range& e) {
+			cout << "Item ID is out of range.\n";
+			return;
+		}
+
+
+		for (auto& item : ItemLists) {
+			if (item.id == targetID) {
+				itemFound = true;
+				cout << "Editing item: " << item.id << " (" << item.name << ")\n";
+
+				cout << "Enter new name (or press Enter to keep the current): ";
+				string newName;
+				cin.ignore();
+				getline(cin, newName);
+				if (!newName.empty()) {
+					item.name = newName;
+				}
+
+				cout << "Enter new type: ";
+				string newType;
+				cin >> newType;
+				if (!newType.empty()) {
+					item.type = newType;
+				}
+
+				cout << "Enter new quantity (-1 to keep the current quantity): ";
+				int newQuantity;
+
+				cin >> newQuantity;
+
+				if (newQuantity >= 0) {
+					item.quantity = newQuantity;
+				}
+
+				
+				saveItemData();
+				cout << "\nItem updated successfully!\n";
+				break;
+			}
+		}
+	}
 
 
 	void listItems()
@@ -163,7 +242,7 @@ public:
 			return;
 		}
 
-		cout << "Items in the system currently: " << "\n ID\tName\t\tType\tQuantity" << "------------------------------\n";
+		cout << "Items in the system currently: " << "\n ID\tName\t\tType\tQuantity" << "\n------------------------------\n";
 
 
 		for(auto& item:ItemLists)

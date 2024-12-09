@@ -1,0 +1,4 @@
+ID: supplier2
+Name: PowerVacuum
+Quantity: 20
+
