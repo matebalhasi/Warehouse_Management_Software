@@ -196,7 +196,7 @@ int main() {
                         displayData(dataVec);
                         pressToContinue();
                         system("cls");
-                        showWorkerMenu();
+                        showBuyerMenu();
                         cin >> input;
 
                     }
@@ -256,7 +256,7 @@ int main() {
                         displayData(dataVec);
                         pressToContinue();
                         system("cls");
-                        showWorkerMenu();
+                        showBuyerMenu();
                         cin >> input;
 
                     }
